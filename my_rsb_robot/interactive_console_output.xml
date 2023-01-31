@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20230129 22:24:03.476" rpa="false" schemaversion="3">
+<suite id="s1" name="Robot Interactive Console" source="c:\Users\nico_\.vscode\extensions\robocorp.robotframework-lsp-1.8.0\src\robotframework_ls\vendored\robotframework_interactive\robot_interactive_console.robot">
+<test id="s1-t1" name="Default Task/Test" line="5">
+<kw name="Interpreter Main Loop" library="MainLoop">
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<status status="PASS" starttime="20230130 01:14:10.229" endtime="20230130 01:14:18.838"/>
+</kw>
+<kw name="Open Available Browser(url:http://hitta.se | maximized:True)">
+<msg timestamp="20230130 17:57:16.120" level="FAIL">No keyword with name 'Open Available Browser(url:http://hitta.se | maximized:True)' found.</msg>
+<status status="FAIL" starttime="20230130 17:57:16.115" endtime="20230130 17:57:16.123"/>
+</kw>
+<kw name="Open Available Browser url:http://hitta.se | maximized:True">
+<msg timestamp="20230130 17:57:30.143" level="FAIL">No keyword with name 'Open Available Browser url:http://hitta.se | maximized:True' found.</msg>
+<status status="FAIL" starttime="20230130 17:57:30.143" endtime="20230130 17:57:30.143"/>
+</kw>
+<kw name="Open Available Browser http://hitta.se">
+<msg timestamp="20230130 17:57:42.414" level="FAIL">No keyword with name 'Open Available Browser http://hitta.se' found.</msg>
+<status status="FAIL" starttime="20230130 17:57:42.414" endtime="20230130 17:57:42.414"/>
+</kw>
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>http://hitta.se</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<status status="PASS" starttime="20230130 17:58:03.696" endtime="20230130 17:58:13.195"/>
+</kw>
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>http://hitta.se maximized:True</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<msg timestamp="20230130 17:59:23.080" level="FAIL">InvalidArgumentException: Message: invalid argument
+  (Session info: chrome=108.0.5359.126)
+Stacktrace:
+Backtrace:
+	(No symbol) [0x008EF243]
+	(No symbol) [0x00877FD1]
+	(No symbol) [0x0076CF10]
+	(No symbol) [0x007600EE]
+	(No symbol) [0x0075EA07]
+	(No symbol) [0x0075EDC2]
+	(No symbol) [0x0076EA5B]
+	(No symbol) [0x007CD187]
+	(No symbol) [0x007B858C]
+	(No symbol) [0x007CC9EB]
+	(No symbol) [0x007B8386]
+	(No symbol) [0x0079163C]
+	(No symbol) [0x0079269D]
+	GetHandleVerifier [0x00B89A22+2655074]
+	GetHandleVerifier [0x00B7CA24+2601828]
+	GetHandleVerifier [0x00998C0A+619850]
+	GetHandleVerifier [0x00997830+614768]
+	(No symbol) [0x008805FC]
+	(No symbol) [0x00885968]
+	(No symbol) [0x00885A55]
+	(No symbol) [0x0089051B]
+	BaseThreadInitThunk [0x76F200F9+25]
+	RtlGetAppContainerNamedObjectPath [0x77177BBE+286]
+	RtlGetAppContainerNamedObjectPath [0x77177B8E+238]
+</msg>
+<status status="FAIL" starttime="20230130 17:59:18.518" endtime="20230130 17:59:23.173"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>sokHittaInput</arg>
+<arg>Nicolas Viola</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230130 18:17:39.629" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=108.0.5359.126)
+Stacktrace:
+Backtrace:
+	(No symbol) [0x008EF243]
+	(No symbol) [0x00877FD1]
+	(No symbol) [0x0076D04D]
+	(No symbol) [0x00752D7A]
+	(No symbol) [0x007BBE7B]
+	(No symbol) [0x007CC196]
+	(No symbol) [0x007B8386]
+	(No symbol) [0x0079163C]
+	(No symbol) [0x0079269D]
+	GetHandleVerifier [0x00B89A22+2655074]
+	GetHandleVerifier [0x00B7CA24+2601828]
+	GetHandleVerifier [0x00998C0A+619850]
+	GetHandleVerifier [0x00997830+614768]
+	(No symbol) [0x008805FC]
+	(No symbol) [0x00885968]
+	(No symbol) [0x00885A55]
+	(No symbol) [0x0089051B]
+	BaseThreadInitThunk [0x76F200F9+25]
+	RtlGetAppContainerNamedObjectPath [0x77177BBE+286]
+	RtlGetAppContainerNamedObjectPath [0x77177B8E+238]
+</msg>
+<status status="FAIL" starttime="20230130 18:17:39.441" endtime="20230130 18:17:39.648"/>
+</kw>
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>http://hitta.se</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<status status="PASS" starttime="20230130 18:18:00.345" endtime="20230130 18:18:19.998"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>sokHittaInput</arg>
+<arg>Nicolas Viola</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" starttime="20230130 18:18:23.366" endtime="20230130 18:18:26.354"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>sokHittaBtn</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" starttime="20230130 18:19:54.615" endtime="20230130 18:19:59.217"/>
+</kw>
+<kw name="Get Text" library="RPA.Browser.Selenium">
+<arg>Personer</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20230130 18:57:14.558" level="FAIL">Element with locator 'Personer' not found.</msg>
+<status status="FAIL" starttime="20230130 18:57:14.375" endtime="20230130 18:57:14.562"/>
+</kw>
+<kw name="Get Text" library="RPA.Browser.Selenium">
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<msg timestamp="20230130 18:58:57.410" level="FAIL">Keyword 'RPA.Browser.Selenium.Get Text' expected 1 argument, got 0.</msg>
+<status status="FAIL" starttime="20230130 18:58:57.408" endtime="20230130 18:58:57.410"/>
+</kw>
+<kw name="Get Text" library="RPA.Browser.Selenium">
+<arg>//*[@id="search-results-cmp"]/div/div[1]/div/div[1]/nav/a[2]</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="PASS" starttime="20230130 18:59:33.250" endtime="20230130 18:59:33.307"/>
+</kw>
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>http://hitta.se</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<status status="PASS" starttime="20230130 19:05:47.844" endtime="20230130 19:05:53.986"/>
+</kw>
+<status status="PASS" starttime="20230129 22:24:03.539" endtime="20230131 19:16:44.498"/>
+</kw>
+<status status="PASS" starttime="20230129 22:24:03.538" endtime="20230131 19:16:44.570"/>
+</test>
+<status status="PASS" starttime="20230129 22:24:03.479" endtime="20230131 19:16:44.671"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Robot Interactive Console">Robot Interactive Console</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
