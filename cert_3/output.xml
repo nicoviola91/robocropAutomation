@@ -1,0 +1,3209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20230205 16:35:31.155" rpa="true" schemaversion="3">
+<suite id="s1" name="Consumer" source="c:\Users\nico_\OneDrive\Documents\GitHub\robocropAutomation\cert_3\consumer.robot">
+<test id="s1-t1" name="Consume traffic data work items" line="9">
+<kw name="For Each Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>Process traffic data</arg>
+<doc>Run a keyword or function for each work item in the input queue.</doc>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:35:33.893" level="INFO">${payload} = {'traffic_data': {'country': 'VCT', 'year': 2011, 'rate': 3.69293}}</msg>
+<status status="PASS" starttime="20230205 16:35:33.890" endtime="20230205 16:35:33.904"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:35:33.913" level="INFO">${traffic_data} = {'country': 'VCT', 'year': 2011, 'rate': 3.69293}</msg>
+<status status="PASS" starttime="20230205 16:35:33.910" endtime="20230205 16:35:33.913"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:35:33.924" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:35:34.118" level="INFO">${country} = VCT</msg>
+<status status="PASS" starttime="20230205 16:35:33.923" endtime="20230205 16:35:34.119"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:35:34.123" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:35:34.120" endtime="20230205 16:35:34.123"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:35:34.124" endtime="20230205 16:35:34.125"/>
+</return>
+<msg timestamp="20230205 16:35:34.126" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:35:33.920" endtime="20230205 16:35:34.126"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:35:34.136" endtime="20230205 16:35:34.872"/>
+</kw>
+<msg timestamp="20230205 16:35:34.873" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:35:34.873" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:35:34.134" endtime="20230205 16:35:34.874"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:35:34.892" level="INFO">Releasing item '0' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:35:34.889" endtime="20230205 16:35:34.893"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:34.885" endtime="20230205 16:35:34.894"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:34.884" endtime="20230205 16:35:34.894"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:35:34.896" endtime="20230205 16:35:34.899"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:35:34.895" endtime="20230205 16:35:34.901"/>
+</branch>
+<status status="PASS" starttime="20230205 16:35:34.883" endtime="20230205 16:35:34.902"/>
+</if>
+<status status="PASS" starttime="20230205 16:35:34.876" endtime="20230205 16:35:34.903"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:34.128" endtime="20230205 16:35:34.904"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:34.127" endtime="20230205 16:35:34.904"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:35:34.906" endtime="20230205 16:35:34.906"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:35:34.905" endtime="20230205 16:35:34.907"/>
+</branch>
+<status status="PASS" starttime="20230205 16:35:34.127" endtime="20230205 16:35:34.907"/>
+</if>
+<status status="PASS" starttime="20230205 16:35:33.885" endtime="20230205 16:35:34.908"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:35:34.912" level="INFO">${payload} = {'traffic_data': {'country': 'SWError', 'year': 2019, 'rate': 3.13947}}</msg>
+<status status="PASS" starttime="20230205 16:35:34.911" endtime="20230205 16:35:34.913"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:35:34.918" level="INFO">${traffic_data} = {'country': 'SWError', 'year': 2019, 'rate': 3.13947}</msg>
+<status status="PASS" starttime="20230205 16:35:34.916" endtime="20230205 16:35:34.919"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:35:34.923" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:35:35.023" level="INFO">${country} = SWError</msg>
+<status status="PASS" starttime="20230205 16:35:34.922" endtime="20230205 16:35:35.024"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:35:35.027" level="INFO">${valid} = False</msg>
+<status status="PASS" starttime="20230205 16:35:35.025" endtime="20230205 16:35:35.028"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:35:35.028" endtime="20230205 16:35:35.029"/>
+</return>
+<msg timestamp="20230205 16:35:35.030" level="INFO">${valid} = False</msg>
+<status status="PASS" starttime="20230205 16:35:34.920" endtime="20230205 16:35:35.034"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:35:35.036" endtime="20230205 16:35:35.037"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:35:35.035" endtime="20230205 16:35:35.037"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<kw name="Set Variable" library="BuiltIn">
+<var>${message}</var>
+<arg>Invalid traffic data: ${traffic_data}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:35:35.042" level="INFO">${message} = Invalid traffic data: {'country': 'SWError', 'year': 2019, 'rate': 3.13947}</msg>
+<status status="PASS" starttime="20230205 16:35:35.041" endtime="20230205 16:35:35.043"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${message}</arg>
+<arg>WARN</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230205 16:35:35.045" level="WARN">Invalid traffic data: {'country': 'SWError', 'year': 2019, 'rate': 3.13947}</msg>
+<status status="PASS" starttime="20230205 16:35:35.044" endtime="20230205 16:35:35.053"/>
+</kw>
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>state=FAILED</arg>
+<arg>exception_type=BUSINESS</arg>
+<arg>code=INVALID_TRAFFIC_DATA</arg>
+<arg>message=${message}</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:35:35.066" level="ERROR">Releasing item '1' with FAILED state and exception: {'type': 'BUSINESS', 'code': 'INVALID_TRAFFIC_DATA', 'message': "Invalid traffic data: {'country': 'SWError', 'year': 2019, 'rate': 3.13947}"}</msg>
+<status status="PASS" starttime="20230205 16:35:35.055" endtime="20230205 16:36:30.520"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:35.039" endtime="20230205 16:36:30.521"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:35.038" endtime="20230205 16:36:30.523"/>
+</branch>
+<status status="PASS" starttime="20230205 16:35:35.035" endtime="20230205 16:36:30.524"/>
+</if>
+<status status="PASS" starttime="20230205 16:35:34.909" endtime="20230205 16:36:30.525"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:30.536" level="INFO">${payload} = {'traffic_data': {'country': 'SWE', 'year': 2018, 'rate': 3.61718}}</msg>
+<status status="PASS" starttime="20230205 16:36:30.533" endtime="20230205 16:36:30.537"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:30.541" level="INFO">${traffic_data} = {'country': 'SWE', 'year': 2018, 'rate': 3.61718}</msg>
+<status status="PASS" starttime="20230205 16:36:30.538" endtime="20230205 16:36:30.542"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:30.557" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:30.770" level="INFO">${country} = SWE</msg>
+<status status="PASS" starttime="20230205 16:36:30.553" endtime="20230205 16:36:30.771"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:30.805" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:30.772" endtime="20230205 16:36:30.806"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:30.824" endtime="20230205 16:36:30.826"/>
+</return>
+<msg timestamp="20230205 16:36:30.833" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:30.543" endtime="20230205 16:36:30.836"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20230205 16:36:31.776" level="FAIL">HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="FAIL" starttime="20230205 16:36:30.855" endtime="20230205 16:36:31.783"/>
+</kw>
+<msg timestamp="20230205 16:36:31.785" level="INFO">${status} = FAIL</msg>
+<msg timestamp="20230205 16:36:31.786" level="INFO">${return} = HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:30.845" endtime="20230205 16:36:31.786"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<status status="NOT RUN" starttime="20230205 16:36:31.797" endtime="20230205 16:36:31.798"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:31.796" endtime="20230205 16:36:31.798"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<kw name="Log" library="BuiltIn">
+<arg>Traffic data posting failed: ${traffic_data} ${return}</arg>
+<arg>ERROR</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230205 16:36:31.804" level="ERROR">Traffic data posting failed: {'country': 'SWE', 'year': 2018, 'rate': 3.61718} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:31.802" endtime="20230205 16:36:37.774"/>
+</kw>
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>state=FAILED</arg>
+<arg>exception_type=APPLICATION</arg>
+<arg>code=TRAFFIC_DATA_POST_FAILED</arg>
+<arg>message=${return}</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:37.789" level="ERROR">Releasing item '2' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<status status="PASS" starttime="20230205 16:36:37.782" endtime="20230205 16:36:39.290"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:31.800" endtime="20230205 16:36:39.299"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:31.799" endtime="20230205 16:36:39.301"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:31.795" endtime="20230205 16:36:39.302"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:31.788" endtime="20230205 16:36:39.303"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:30.841" endtime="20230205 16:36:39.306"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:30.838" endtime="20230205 16:36:39.307"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:39.316" endtime="20230205 16:36:39.318"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:39.308" endtime="20230205 16:36:39.319"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:30.837" endtime="20230205 16:36:39.322"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:30.527" endtime="20230205 16:36:39.324"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:39.339" level="INFO">${payload} = {'traffic_data': {'country': 'SVN', 'year': 2018, 'rate': 4.52394}}</msg>
+<status status="PASS" starttime="20230205 16:36:39.336" endtime="20230205 16:36:39.341"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:39.352" level="INFO">${traffic_data} = {'country': 'SVN', 'year': 2018, 'rate': 4.52394}</msg>
+<status status="PASS" starttime="20230205 16:36:39.349" endtime="20230205 16:36:39.352"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:39.369" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:39.591" level="INFO">${country} = SVN</msg>
+<status status="PASS" starttime="20230205 16:36:39.364" endtime="20230205 16:36:39.598"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:39.604" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:39.600" endtime="20230205 16:36:39.605"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:39.606" endtime="20230205 16:36:39.607"/>
+</return>
+<msg timestamp="20230205 16:36:39.616" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:39.353" endtime="20230205 16:36:39.617"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:39.650" endtime="20230205 16:36:40.606"/>
+</kw>
+<msg timestamp="20230205 16:36:40.607" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:40.607" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:39.646" endtime="20230205 16:36:40.608"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:40.638" level="INFO">Releasing item '3' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:40.635" endtime="20230205 16:36:40.640"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:40.624" endtime="20230205 16:36:40.649"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:40.622" endtime="20230205 16:36:40.650"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:40.653" endtime="20230205 16:36:40.654"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:40.652" endtime="20230205 16:36:40.655"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:40.621" endtime="20230205 16:36:40.655"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:40.616" endtime="20230205 16:36:40.656"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:39.638" endtime="20230205 16:36:40.657"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:39.636" endtime="20230205 16:36:40.658"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:40.668" endtime="20230205 16:36:40.670"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:40.666" endtime="20230205 16:36:40.671"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:39.635" endtime="20230205 16:36:40.672"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:39.330" endtime="20230205 16:36:40.674"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:40.687" level="INFO">${payload} = {'traffic_data': {'country': 'SGP', 'year': 2019, 'rate': 2.08609}}</msg>
+<status status="PASS" starttime="20230205 16:36:40.685" endtime="20230205 16:36:40.688"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:40.694" level="INFO">${traffic_data} = {'country': 'SGP', 'year': 2019, 'rate': 2.08609}</msg>
+<status status="PASS" starttime="20230205 16:36:40.689" endtime="20230205 16:36:40.695"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:40.701" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:40.800" level="INFO">${country} = SGP</msg>
+<status status="PASS" starttime="20230205 16:36:40.699" endtime="20230205 16:36:40.801"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:40.806" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:40.803" endtime="20230205 16:36:40.806"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:40.807" endtime="20230205 16:36:40.807"/>
+</return>
+<msg timestamp="20230205 16:36:40.810" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:40.697" endtime="20230205 16:36:40.811"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:40.818" endtime="20230205 16:36:41.519"/>
+</kw>
+<msg timestamp="20230205 16:36:41.520" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:41.520" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:40.816" endtime="20230205 16:36:41.521"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:41.535" level="INFO">Releasing item '4' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:41.533" endtime="20230205 16:36:41.536"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:41.529" endtime="20230205 16:36:41.537"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:41.528" endtime="20230205 16:36:41.537"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:41.539" endtime="20230205 16:36:41.540"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:41.538" endtime="20230205 16:36:41.541"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:41.528" endtime="20230205 16:36:41.543"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:41.522" endtime="20230205 16:36:41.544"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:40.814" endtime="20230205 16:36:41.546"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:40.813" endtime="20230205 16:36:41.548"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:41.553" endtime="20230205 16:36:41.555"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:41.551" endtime="20230205 16:36:41.556"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:40.812" endtime="20230205 16:36:41.559"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:40.681" endtime="20230205 16:36:41.561"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:41.567" level="INFO">${payload} = {'traffic_data': {'country': 'NOR', 'year': 2019, 'rate': 2.12302}}</msg>
+<status status="PASS" starttime="20230205 16:36:41.565" endtime="20230205 16:36:41.567"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:41.571" level="INFO">${traffic_data} = {'country': 'NOR', 'year': 2019, 'rate': 2.12302}</msg>
+<status status="PASS" starttime="20230205 16:36:41.568" endtime="20230205 16:36:41.572"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:41.580" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:41.673" level="INFO">${country} = NOR</msg>
+<status status="PASS" starttime="20230205 16:36:41.577" endtime="20230205 16:36:41.675"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:41.678" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:41.676" endtime="20230205 16:36:41.679"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:41.679" endtime="20230205 16:36:41.681"/>
+</return>
+<msg timestamp="20230205 16:36:41.683" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:41.573" endtime="20230205 16:36:41.683"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:41.688" endtime="20230205 16:36:42.373"/>
+</kw>
+<msg timestamp="20230205 16:36:42.376" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:42.377" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:41.687" endtime="20230205 16:36:42.377"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:42.388" level="INFO">Releasing item '5' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:42.385" endtime="20230205 16:36:42.389"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:42.382" endtime="20230205 16:36:42.392"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:42.381" endtime="20230205 16:36:42.394"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:42.404" endtime="20230205 16:36:42.407"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:42.395" endtime="20230205 16:36:42.409"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:42.380" endtime="20230205 16:36:42.411"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:42.378" endtime="20230205 16:36:42.412"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:41.685" endtime="20230205 16:36:42.414"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:41.684" endtime="20230205 16:36:42.415"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:42.418" endtime="20230205 16:36:42.419"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:42.416" endtime="20230205 16:36:42.420"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:41.684" endtime="20230205 16:36:42.421"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:41.563" endtime="20230205 16:36:42.422"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:42.432" level="INFO">${payload} = {'traffic_data': {'country': 'NLD', 'year': 2019, 'rate': 3.98313}}</msg>
+<status status="PASS" starttime="20230205 16:36:42.429" endtime="20230205 16:36:42.433"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:42.438" level="INFO">${traffic_data} = {'country': 'NLD', 'year': 2019, 'rate': 3.98313}</msg>
+<status status="PASS" starttime="20230205 16:36:42.434" endtime="20230205 16:36:42.444"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:42.453" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:42.584" level="INFO">${country} = NLD</msg>
+<status status="PASS" starttime="20230205 16:36:42.449" endtime="20230205 16:36:42.584"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:42.588" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:42.586" endtime="20230205 16:36:42.589"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:42.589" endtime="20230205 16:36:42.590"/>
+</return>
+<msg timestamp="20230205 16:36:42.596" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:42.446" endtime="20230205 16:36:42.596"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:42.602" endtime="20230205 16:36:43.286"/>
+</kw>
+<msg timestamp="20230205 16:36:43.287" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:43.288" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:42.600" endtime="20230205 16:36:43.288"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:43.301" level="INFO">Releasing item '6' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:43.299" endtime="20230205 16:36:43.302"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:43.296" endtime="20230205 16:36:43.304"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:43.295" endtime="20230205 16:36:43.305"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:43.307" endtime="20230205 16:36:43.309"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:43.305" endtime="20230205 16:36:43.310"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:43.295" endtime="20230205 16:36:43.310"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:43.290" endtime="20230205 16:36:43.311"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:42.598" endtime="20230205 16:36:43.312"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:42.597" endtime="20230205 16:36:43.312"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:43.315" endtime="20230205 16:36:43.315"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:43.314" endtime="20230205 16:36:43.316"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:42.597" endtime="20230205 16:36:43.316"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:42.425" endtime="20230205 16:36:43.316"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:43.320" level="INFO">${payload} = {'traffic_data': {'country': 'MLT', 'year': 2019, 'rate': 4.10715}}</msg>
+<status status="PASS" starttime="20230205 16:36:43.319" endtime="20230205 16:36:43.320"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:43.323" level="INFO">${traffic_data} = {'country': 'MLT', 'year': 2019, 'rate': 4.10715}</msg>
+<status status="PASS" starttime="20230205 16:36:43.321" endtime="20230205 16:36:43.325"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:43.331" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:43.425" level="INFO">${country} = MLT</msg>
+<status status="PASS" starttime="20230205 16:36:43.329" endtime="20230205 16:36:43.426"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:43.429" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:43.427" endtime="20230205 16:36:43.430"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:43.431" endtime="20230205 16:36:43.431"/>
+</return>
+<msg timestamp="20230205 16:36:43.434" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:43.326" endtime="20230205 16:36:43.434"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:43.440" endtime="20230205 16:36:44.169"/>
+</kw>
+<msg timestamp="20230205 16:36:44.171" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:44.171" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:43.438" endtime="20230205 16:36:44.172"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:44.183" level="INFO">Releasing item '7' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:44.181" endtime="20230205 16:36:44.184"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:44.179" endtime="20230205 16:36:44.186"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:44.178" endtime="20230205 16:36:44.186"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:44.190" endtime="20230205 16:36:44.192"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:44.188" endtime="20230205 16:36:44.193"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:44.177" endtime="20230205 16:36:44.193"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:44.173" endtime="20230205 16:36:44.194"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:43.436" endtime="20230205 16:36:44.196"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:43.435" endtime="20230205 16:36:44.197"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:44.199" endtime="20230205 16:36:44.200"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:44.198" endtime="20230205 16:36:44.201"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:43.435" endtime="20230205 16:36:44.201"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:43.317" endtime="20230205 16:36:44.202"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:44.206" level="INFO">${payload} = {'traffic_data': {'country': 'MDV', 'year': 2019, 'rate': 1.6277}}</msg>
+<status status="PASS" starttime="20230205 16:36:44.205" endtime="20230205 16:36:44.207"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:44.211" level="INFO">${traffic_data} = {'country': 'MDV', 'year': 2019, 'rate': 1.6277}</msg>
+<status status="PASS" starttime="20230205 16:36:44.209" endtime="20230205 16:36:44.211"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:44.216" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:44.311" level="INFO">${country} = MDV</msg>
+<status status="PASS" starttime="20230205 16:36:44.214" endtime="20230205 16:36:44.312"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:44.315" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:44.313" endtime="20230205 16:36:44.316"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:44.316" endtime="20230205 16:36:44.317"/>
+</return>
+<msg timestamp="20230205 16:36:44.319" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:44.212" endtime="20230205 16:36:44.320"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:44.372" endtime="20230205 16:36:45.079"/>
+</kw>
+<msg timestamp="20230205 16:36:45.080" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:45.080" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:44.368" endtime="20230205 16:36:45.081"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:45.096" level="INFO">Releasing item '8' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:45.094" endtime="20230205 16:36:45.097"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.092" endtime="20230205 16:36:45.099"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.089" endtime="20230205 16:36:45.100"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:45.101" endtime="20230205 16:36:45.102"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:45.100" endtime="20230205 16:36:45.103"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:45.088" endtime="20230205 16:36:45.103"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:45.083" endtime="20230205 16:36:45.104"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:44.358" endtime="20230205 16:36:45.105"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:44.322" endtime="20230205 16:36:45.105"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:45.107" endtime="20230205 16:36:45.109"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:45.106" endtime="20230205 16:36:45.110"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:44.321" endtime="20230205 16:36:45.111"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:44.203" endtime="20230205 16:36:45.111"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:45.116" level="INFO">${payload} = {'traffic_data': {'country': 'LUX', 'year': 2019, 'rate': 4.07499}}</msg>
+<status status="PASS" starttime="20230205 16:36:45.115" endtime="20230205 16:36:45.117"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:45.119" level="INFO">${traffic_data} = {'country': 'LUX', 'year': 2019, 'rate': 4.07499}</msg>
+<status status="PASS" starttime="20230205 16:36:45.118" endtime="20230205 16:36:45.120"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:45.126" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:45.222" level="INFO">${country} = LUX</msg>
+<status status="PASS" starttime="20230205 16:36:45.122" endtime="20230205 16:36:45.223"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:45.227" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:45.225" endtime="20230205 16:36:45.228"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:45.228" endtime="20230205 16:36:45.229"/>
+</return>
+<msg timestamp="20230205 16:36:45.230" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:45.120" endtime="20230205 16:36:45.231"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:45.241" endtime="20230205 16:36:45.959"/>
+</kw>
+<msg timestamp="20230205 16:36:45.960" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:45.960" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:45.237" endtime="20230205 16:36:45.960"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:45.976" level="INFO">Releasing item '9' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:45.974" endtime="20230205 16:36:45.977"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.970" endtime="20230205 16:36:45.978"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.968" endtime="20230205 16:36:45.978"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:45.980" endtime="20230205 16:36:45.981"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:45.979" endtime="20230205 16:36:45.981"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:45.967" endtime="20230205 16:36:45.982"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:45.962" endtime="20230205 16:36:45.982"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.235" endtime="20230205 16:36:45.985"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:45.233" endtime="20230205 16:36:45.986"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:45.988" endtime="20230205 16:36:45.989"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:45.987" endtime="20230205 16:36:45.991"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:45.233" endtime="20230205 16:36:45.992"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:45.113" endtime="20230205 16:36:45.992"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:45.996" level="INFO">${payload} = {'traffic_data': {'country': 'LCA', 'year': 2008, 'rate': 3.52918}}</msg>
+<status status="PASS" starttime="20230205 16:36:45.995" endtime="20230205 16:36:45.997"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:46.000" level="INFO">${traffic_data} = {'country': 'LCA', 'year': 2008, 'rate': 3.52918}</msg>
+<status status="PASS" starttime="20230205 16:36:45.997" endtime="20230205 16:36:46.001"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:46.006" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:46.102" level="INFO">${country} = LCA</msg>
+<status status="PASS" starttime="20230205 16:36:46.004" endtime="20230205 16:36:46.103"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:46.108" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:46.104" endtime="20230205 16:36:46.109"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:46.110" endtime="20230205 16:36:46.111"/>
+</return>
+<msg timestamp="20230205 16:36:46.112" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:46.002" endtime="20230205 16:36:46.112"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:46.118" endtime="20230205 16:36:46.802"/>
+</kw>
+<msg timestamp="20230205 16:36:46.803" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:46.804" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:46.116" endtime="20230205 16:36:46.804"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:46.821" level="INFO">Releasing item '10' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:46.818" endtime="20230205 16:36:46.822"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:46.815" endtime="20230205 16:36:46.825"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:46.813" endtime="20230205 16:36:46.826"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:46.829" endtime="20230205 16:36:46.830"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:46.827" endtime="20230205 16:36:46.842"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:46.813" endtime="20230205 16:36:46.843"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:46.806" endtime="20230205 16:36:46.844"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:46.114" endtime="20230205 16:36:46.846"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:46.113" endtime="20230205 16:36:46.847"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:46.854" endtime="20230205 16:36:46.856"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:46.850" endtime="20230205 16:36:46.859"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:46.113" endtime="20230205 16:36:46.860"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:45.993" endtime="20230205 16:36:46.862"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:46.871" level="INFO">${payload} = {'traffic_data': {'country': 'KIR', 'year': 2019, 'rate': 1.92481}}</msg>
+<status status="PASS" starttime="20230205 16:36:46.867" endtime="20230205 16:36:46.872"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:46.884" level="INFO">${traffic_data} = {'country': 'KIR', 'year': 2019, 'rate': 1.92481}</msg>
+<status status="PASS" starttime="20230205 16:36:46.875" endtime="20230205 16:36:46.885"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:46.894" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:47.018" level="INFO">${country} = KIR</msg>
+<status status="PASS" starttime="20230205 16:36:46.891" endtime="20230205 16:36:47.019"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:47.022" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:47.020" endtime="20230205 16:36:47.023"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:47.025" endtime="20230205 16:36:47.025"/>
+</return>
+<msg timestamp="20230205 16:36:47.027" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:46.887" endtime="20230205 16:36:47.028"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:47.035" endtime="20230205 16:36:47.709"/>
+</kw>
+<msg timestamp="20230205 16:36:47.710" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:47.711" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:47.034" endtime="20230205 16:36:47.711"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:47.719" level="INFO">Releasing item '11' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:47.718" endtime="20230205 16:36:47.720"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.716" endtime="20230205 16:36:47.721"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.715" endtime="20230205 16:36:47.721"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:47.726" endtime="20230205 16:36:47.727"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:47.725" endtime="20230205 16:36:47.728"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:47.715" endtime="20230205 16:36:47.729"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:47.712" endtime="20230205 16:36:47.729"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.031" endtime="20230205 16:36:47.730"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.030" endtime="20230205 16:36:47.731"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:47.732" endtime="20230205 16:36:47.733"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:47.732" endtime="20230205 16:36:47.734"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:47.029" endtime="20230205 16:36:47.734"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:46.864" endtime="20230205 16:36:47.735"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:47.743" level="INFO">${payload} = {'traffic_data': {'country': 'JPN', 'year': 2019, 'rate': 3.59908}}</msg>
+<status status="PASS" starttime="20230205 16:36:47.741" endtime="20230205 16:36:47.744"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:47.746" level="INFO">${traffic_data} = {'country': 'JPN', 'year': 2019, 'rate': 3.59908}</msg>
+<status status="PASS" starttime="20230205 16:36:47.745" endtime="20230205 16:36:47.747"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:47.751" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:47.846" level="INFO">${country} = JPN</msg>
+<status status="PASS" starttime="20230205 16:36:47.750" endtime="20230205 16:36:47.846"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:47.849" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:47.847" endtime="20230205 16:36:47.850"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:47.850" endtime="20230205 16:36:47.851"/>
+</return>
+<msg timestamp="20230205 16:36:47.852" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:47.748" endtime="20230205 16:36:47.853"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:36:47.861" endtime="20230205 16:36:48.558"/>
+</kw>
+<msg timestamp="20230205 16:36:48.560" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:36:48.561" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:36:47.859" endtime="20230205 16:36:48.561"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:48.575" level="INFO">Releasing item '12' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:36:48.571" endtime="20230205 16:36:48.576"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:48.569" endtime="20230205 16:36:48.577"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:48.568" endtime="20230205 16:36:48.578"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:48.581" endtime="20230205 16:36:48.583"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:48.579" endtime="20230205 16:36:48.584"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:48.567" endtime="20230205 16:36:48.585"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:48.563" endtime="20230205 16:36:48.587"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.854" endtime="20230205 16:36:48.591"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:47.854" endtime="20230205 16:36:48.592"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:48.593" endtime="20230205 16:36:48.595"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:48.592" endtime="20230205 16:36:48.596"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:47.853" endtime="20230205 16:36:48.597"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:47.736" endtime="20230205 16:36:48.598"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:48.607" level="INFO">${payload} = {'traffic_data': {'country': 'ISR', 'year': 2019, 'rate': 3.90874}}</msg>
+<status status="PASS" starttime="20230205 16:36:48.603" endtime="20230205 16:36:48.608"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:48.613" level="INFO">${traffic_data} = {'country': 'ISR', 'year': 2019, 'rate': 3.90874}</msg>
+<status status="PASS" starttime="20230205 16:36:48.610" endtime="20230205 16:36:48.614"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:48.621" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:48.722" level="INFO">${country} = ISR</msg>
+<status status="PASS" starttime="20230205 16:36:48.619" endtime="20230205 16:36:48.724"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:48.727" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:48.724" endtime="20230205 16:36:48.727"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:48.729" endtime="20230205 16:36:48.730"/>
+</return>
+<msg timestamp="20230205 16:36:48.732" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:48.616" endtime="20230205 16:36:48.732"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20230205 16:36:49.486" level="FAIL">HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="FAIL" starttime="20230205 16:36:48.737" endtime="20230205 16:36:49.489"/>
+</kw>
+<msg timestamp="20230205 16:36:49.492" level="INFO">${status} = FAIL</msg>
+<msg timestamp="20230205 16:36:49.492" level="INFO">${return} = HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:48.736" endtime="20230205 16:36:49.493"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<status status="NOT RUN" starttime="20230205 16:36:49.503" endtime="20230205 16:36:49.504"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:49.501" endtime="20230205 16:36:49.507"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<kw name="Log" library="BuiltIn">
+<arg>Traffic data posting failed: ${traffic_data} ${return}</arg>
+<arg>ERROR</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230205 16:36:49.516" level="ERROR">Traffic data posting failed: {'country': 'ISR', 'year': 2019, 'rate': 3.90874} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:49.514" endtime="20230205 16:36:53.086"/>
+</kw>
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>state=FAILED</arg>
+<arg>exception_type=APPLICATION</arg>
+<arg>code=TRAFFIC_DATA_POST_FAILED</arg>
+<arg>message=${return}</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:36:53.094" level="ERROR">Releasing item '13' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<status status="PASS" starttime="20230205 16:36:53.089" endtime="20230205 16:36:54.417"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:49.509" endtime="20230205 16:36:54.419"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:49.508" endtime="20230205 16:36:54.428"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:49.500" endtime="20230205 16:36:54.430"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:49.494" endtime="20230205 16:36:54.431"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:48.734" endtime="20230205 16:36:54.433"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:48.733" endtime="20230205 16:36:54.435"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:36:54.445" endtime="20230205 16:36:54.447"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:54.440" endtime="20230205 16:36:54.449"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:48.733" endtime="20230205 16:36:54.451"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:48.599" endtime="20230205 16:36:54.453"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:36:54.470" level="INFO">${payload} = {'traffic_data': {'country': 'ISL', 'year': 2019, 'rate': 2.04915}}</msg>
+<status status="PASS" starttime="20230205 16:36:54.468" endtime="20230205 16:36:54.474"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:36:54.485" level="INFO">${traffic_data} = {'country': 'ISL', 'year': 2019, 'rate': 2.04915}</msg>
+<status status="PASS" starttime="20230205 16:36:54.479" endtime="20230205 16:36:54.486"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:36:54.513" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:36:54.680" level="INFO">${country} = ISL</msg>
+<status status="PASS" starttime="20230205 16:36:54.502" endtime="20230205 16:36:54.680"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:36:54.683" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:54.681" endtime="20230205 16:36:54.684"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:36:54.684" endtime="20230205 16:36:54.685"/>
+</return>
+<msg timestamp="20230205 16:36:54.686" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:36:54.496" endtime="20230205 16:36:54.691"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20230205 16:36:55.597" level="FAIL">HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="FAIL" starttime="20230205 16:36:54.701" endtime="20230205 16:36:55.599"/>
+</kw>
+<msg timestamp="20230205 16:36:55.600" level="INFO">${status} = FAIL</msg>
+<msg timestamp="20230205 16:36:55.601" level="INFO">${return} = HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:54.699" endtime="20230205 16:36:55.601"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<status status="NOT RUN" starttime="20230205 16:36:55.618" endtime="20230205 16:36:55.619"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:36:55.616" endtime="20230205 16:36:55.627"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<kw name="Log" library="BuiltIn">
+<arg>Traffic data posting failed: ${traffic_data} ${return}</arg>
+<arg>ERROR</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230205 16:36:55.651" level="ERROR">Traffic data posting failed: {'country': 'ISL', 'year': 2019, 'rate': 2.04915} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:36:55.635" endtime="20230205 16:37:05.182"/>
+</kw>
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>state=FAILED</arg>
+<arg>exception_type=APPLICATION</arg>
+<arg>code=TRAFFIC_DATA_POST_FAILED</arg>
+<arg>message=${return}</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:05.199" level="ERROR">Releasing item '14' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<status status="PASS" starttime="20230205 16:37:05.193" endtime="20230205 16:37:08.846"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:55.630" endtime="20230205 16:37:08.848"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:55.629" endtime="20230205 16:37:08.853"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:55.615" endtime="20230205 16:37:08.854"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:55.606" endtime="20230205 16:37:08.855"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:54.696" endtime="20230205 16:37:08.858"/>
+</kw>
+<status status="PASS" starttime="20230205 16:36:54.695" endtime="20230205 16:37:08.859"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:08.862" endtime="20230205 16:37:08.864"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:08.861" endtime="20230205 16:37:08.869"/>
+</branch>
+<status status="PASS" starttime="20230205 16:36:54.694" endtime="20230205 16:37:08.870"/>
+</if>
+<status status="PASS" starttime="20230205 16:36:54.462" endtime="20230205 16:37:08.873"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:08.887" level="INFO">${payload} = {'traffic_data': {'country': 'IRL', 'year': 2019, 'rate': 3.13364}}</msg>
+<status status="PASS" starttime="20230205 16:37:08.885" endtime="20230205 16:37:08.888"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:08.894" level="INFO">${traffic_data} = {'country': 'IRL', 'year': 2019, 'rate': 3.13364}</msg>
+<status status="PASS" starttime="20230205 16:37:08.889" endtime="20230205 16:37:08.895"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:08.905" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:09.064" level="INFO">${country} = IRL</msg>
+<status status="PASS" starttime="20230205 16:37:08.902" endtime="20230205 16:37:09.065"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:09.073" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:09.071" endtime="20230205 16:37:09.073"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:09.074" endtime="20230205 16:37:09.075"/>
+</return>
+<msg timestamp="20230205 16:37:09.076" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:08.896" endtime="20230205 16:37:09.076"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:09.088" endtime="20230205 16:37:09.929"/>
+</kw>
+<msg timestamp="20230205 16:37:09.930" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:09.930" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:09.080" endtime="20230205 16:37:09.930"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:09.947" level="INFO">Releasing item '15' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:09.946" endtime="20230205 16:37:09.953"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:09.944" endtime="20230205 16:37:09.959"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:09.943" endtime="20230205 16:37:09.960"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:09.963" endtime="20230205 16:37:09.971"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:09.962" endtime="20230205 16:37:09.972"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:09.942" endtime="20230205 16:37:09.973"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:09.931" endtime="20230205 16:37:09.974"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:09.078" endtime="20230205 16:37:09.975"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:09.077" endtime="20230205 16:37:09.976"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:09.977" endtime="20230205 16:37:09.978"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:09.976" endtime="20230205 16:37:09.978"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:09.077" endtime="20230205 16:37:09.979"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:08.877" endtime="20230205 16:37:09.980"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:09.994" level="INFO">${payload} = {'traffic_data': {'country': 'GTM', 'year': 2006, 'rate': 4.61297}}</msg>
+<status status="PASS" starttime="20230205 16:37:09.992" endtime="20230205 16:37:09.994"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:10.005" level="INFO">${traffic_data} = {'country': 'GTM', 'year': 2006, 'rate': 4.61297}</msg>
+<status status="PASS" starttime="20230205 16:37:09.996" endtime="20230205 16:37:10.006"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:10.012" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:10.155" level="INFO">${country} = GTM</msg>
+<status status="PASS" starttime="20230205 16:37:10.009" endtime="20230205 16:37:10.156"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:10.160" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:10.157" endtime="20230205 16:37:10.160"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:10.161" endtime="20230205 16:37:10.162"/>
+</return>
+<msg timestamp="20230205 16:37:10.164" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:10.007" endtime="20230205 16:37:10.172"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<msg timestamp="20230205 16:37:10.975" level="FAIL">HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="FAIL" starttime="20230205 16:37:10.227" endtime="20230205 16:37:10.977"/>
+</kw>
+<msg timestamp="20230205 16:37:10.978" level="INFO">${status} = FAIL</msg>
+<msg timestamp="20230205 16:37:10.979" level="INFO">${return} = HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:37:10.197" endtime="20230205 16:37:10.980"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<status status="NOT RUN" starttime="20230205 16:37:10.990" endtime="20230205 16:37:10.990"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:10.989" endtime="20230205 16:37:10.991"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<kw name="Log" library="BuiltIn">
+<arg>Traffic data posting failed: ${traffic_data} ${return}</arg>
+<arg>ERROR</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230205 16:37:10.997" level="ERROR">Traffic data posting failed: {'country': 'GTM', 'year': 2006, 'rate': 4.61297} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<status status="PASS" starttime="20230205 16:37:10.996" endtime="20230205 16:37:12.179"/>
+</kw>
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>state=FAILED</arg>
+<arg>exception_type=APPLICATION</arg>
+<arg>code=TRAFFIC_DATA_POST_FAILED</arg>
+<arg>message=${return}</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:12.194" level="ERROR">Releasing item '16' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<status status="PASS" starttime="20230205 16:37:12.181" endtime="20230205 16:37:14.759"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:10.993" endtime="20230205 16:37:14.762"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:10.992" endtime="20230205 16:37:14.765"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:10.987" endtime="20230205 16:37:14.767"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:10.981" endtime="20230205 16:37:14.769"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:10.192" endtime="20230205 16:37:14.771"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:10.175" endtime="20230205 16:37:14.772"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:14.778" endtime="20230205 16:37:14.783"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:14.773" endtime="20230205 16:37:14.786"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:10.174" endtime="20230205 16:37:14.788"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:09.989" endtime="20230205 16:37:14.791"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:14.802" level="INFO">${payload} = {'traffic_data': {'country': 'GRD', 'year': 2014, 'rate': 4.59137}}</msg>
+<status status="PASS" starttime="20230205 16:37:14.798" endtime="20230205 16:37:14.803"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:14.808" level="INFO">${traffic_data} = {'country': 'GRD', 'year': 2014, 'rate': 4.59137}</msg>
+<status status="PASS" starttime="20230205 16:37:14.804" endtime="20230205 16:37:14.809"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:14.820" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:14.973" level="INFO">${country} = GRD</msg>
+<status status="PASS" starttime="20230205 16:37:14.818" endtime="20230205 16:37:14.974"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:14.978" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:14.976" endtime="20230205 16:37:14.978"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:14.979" endtime="20230205 16:37:14.984"/>
+</return>
+<msg timestamp="20230205 16:37:14.988" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:14.810" endtime="20230205 16:37:14.989"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:15.002" endtime="20230205 16:37:15.858"/>
+</kw>
+<msg timestamp="20230205 16:37:15.859" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:15.860" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:14.995" endtime="20230205 16:37:15.860"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:15.877" level="INFO">Releasing item '17' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:15.875" endtime="20230205 16:37:15.878"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:15.872" endtime="20230205 16:37:15.879"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:15.871" endtime="20230205 16:37:15.879"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:15.888" endtime="20230205 16:37:15.890"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:15.887" endtime="20230205 16:37:15.891"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:15.869" endtime="20230205 16:37:15.892"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:15.861" endtime="20230205 16:37:15.893"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:14.992" endtime="20230205 16:37:15.894"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:14.991" endtime="20230205 16:37:15.895"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:15.900" endtime="20230205 16:37:15.904"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:15.895" endtime="20230205 16:37:15.905"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:14.990" endtime="20230205 16:37:15.907"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:14.793" endtime="20230205 16:37:15.907"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:15.921" level="INFO">${payload} = {'traffic_data': {'country': 'GBR', 'year': 2019, 'rate': 3.21187}}</msg>
+<status status="PASS" starttime="20230205 16:37:15.912" endtime="20230205 16:37:15.923"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:15.928" level="INFO">${traffic_data} = {'country': 'GBR', 'year': 2019, 'rate': 3.21187}</msg>
+<status status="PASS" starttime="20230205 16:37:15.924" endtime="20230205 16:37:15.929"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:15.976" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:16.192" level="INFO">${country} = GBR</msg>
+<status status="PASS" starttime="20230205 16:37:15.973" endtime="20230205 16:37:16.193"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:16.196" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:16.194" endtime="20230205 16:37:16.199"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:16.200" endtime="20230205 16:37:16.200"/>
+</return>
+<msg timestamp="20230205 16:37:16.203" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:15.962" endtime="20230205 16:37:16.203"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:16.209" endtime="20230205 16:37:16.899"/>
+</kw>
+<msg timestamp="20230205 16:37:16.900" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:16.901" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:16.208" endtime="20230205 16:37:16.902"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:16.912" level="INFO">Releasing item '18' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:16.910" endtime="20230205 16:37:16.914"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:16.909" endtime="20230205 16:37:16.916"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:16.908" endtime="20230205 16:37:16.918"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:16.920" endtime="20230205 16:37:16.921"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:16.918" endtime="20230205 16:37:16.921"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:16.907" endtime="20230205 16:37:16.921"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:16.903" endtime="20230205 16:37:16.923"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:16.205" endtime="20230205 16:37:16.923"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:16.204" endtime="20230205 16:37:16.923"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:16.925" endtime="20230205 16:37:16.925"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:16.924" endtime="20230205 16:37:16.926"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:16.204" endtime="20230205 16:37:16.926"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:15.909" endtime="20230205 16:37:16.927"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:16.934" level="INFO">${payload} = {'traffic_data': {'country': 'FSM', 'year': 2019, 'rate': 0.15972}}</msg>
+<status status="PASS" starttime="20230205 16:37:16.931" endtime="20230205 16:37:16.935"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:16.938" level="INFO">${traffic_data} = {'country': 'FSM', 'year': 2019, 'rate': 0.15972}</msg>
+<status status="PASS" starttime="20230205 16:37:16.936" endtime="20230205 16:37:16.939"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:16.945" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:17.051" level="INFO">${country} = FSM</msg>
+<status status="PASS" starttime="20230205 16:37:16.942" endtime="20230205 16:37:17.051"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:17.055" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:17.053" endtime="20230205 16:37:17.056"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:17.057" endtime="20230205 16:37:17.058"/>
+</return>
+<msg timestamp="20230205 16:37:17.059" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:16.940" endtime="20230205 16:37:17.059"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:17.068" endtime="20230205 16:37:17.774"/>
+</kw>
+<msg timestamp="20230205 16:37:17.775" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:17.776" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:17.065" endtime="20230205 16:37:17.776"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:17.789" level="INFO">Releasing item '19' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:17.787" endtime="20230205 16:37:17.791"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.785" endtime="20230205 16:37:17.792"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.783" endtime="20230205 16:37:17.793"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:17.798" endtime="20230205 16:37:17.798"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:17.795" endtime="20230205 16:37:17.799"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:17.782" endtime="20230205 16:37:17.800"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:17.777" endtime="20230205 16:37:17.800"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.062" endtime="20230205 16:37:17.801"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.060" endtime="20230205 16:37:17.802"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:17.803" endtime="20230205 16:37:17.804"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:17.802" endtime="20230205 16:37:17.805"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:17.060" endtime="20230205 16:37:17.806"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:16.928" endtime="20230205 16:37:17.806"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:17.813" level="INFO">${payload} = {'traffic_data': {'country': 'FIN', 'year': 2019, 'rate': 3.88637}}</msg>
+<status status="PASS" starttime="20230205 16:37:17.810" endtime="20230205 16:37:17.814"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:17.817" level="INFO">${traffic_data} = {'country': 'FIN', 'year': 2019, 'rate': 3.88637}</msg>
+<status status="PASS" starttime="20230205 16:37:17.815" endtime="20230205 16:37:17.818"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:17.824" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:17.958" level="INFO">${country} = FIN</msg>
+<status status="PASS" starttime="20230205 16:37:17.821" endtime="20230205 16:37:17.959"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:17.961" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:17.960" endtime="20230205 16:37:17.962"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:17.964" endtime="20230205 16:37:17.965"/>
+</return>
+<msg timestamp="20230205 16:37:17.966" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:17.818" endtime="20230205 16:37:17.967"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:17.975" endtime="20230205 16:37:18.714"/>
+</kw>
+<msg timestamp="20230205 16:37:18.715" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:18.715" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:17.973" endtime="20230205 16:37:18.716"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:18.724" level="INFO">Releasing item '20' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:18.723" endtime="20230205 16:37:18.725"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:18.721" endtime="20230205 16:37:18.726"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:18.720" endtime="20230205 16:37:18.727"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:18.729" endtime="20230205 16:37:18.731"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:18.727" endtime="20230205 16:37:18.731"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:18.719" endtime="20230205 16:37:18.732"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:18.716" endtime="20230205 16:37:18.734"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.969" endtime="20230205 16:37:18.735"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:17.968" endtime="20230205 16:37:18.736"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:18.738" endtime="20230205 16:37:18.739"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:18.737" endtime="20230205 16:37:18.739"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:17.967" endtime="20230205 16:37:18.740"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:17.808" endtime="20230205 16:37:18.741"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:18.749" level="INFO">${payload} = {'traffic_data': {'country': 'EST', 'year': 2019, 'rate': 4.46408}}</msg>
+<status status="PASS" starttime="20230205 16:37:18.744" endtime="20230205 16:37:18.750"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:18.752" level="INFO">${traffic_data} = {'country': 'EST', 'year': 2019, 'rate': 4.46408}</msg>
+<status status="PASS" starttime="20230205 16:37:18.751" endtime="20230205 16:37:18.753"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:18.757" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:18.846" level="INFO">${country} = EST</msg>
+<status status="PASS" starttime="20230205 16:37:18.756" endtime="20230205 16:37:18.847"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:18.851" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:18.848" endtime="20230205 16:37:18.851"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:18.852" endtime="20230205 16:37:18.853"/>
+</return>
+<msg timestamp="20230205 16:37:18.855" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:18.754" endtime="20230205 16:37:18.856"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:18.864" endtime="20230205 16:37:19.578"/>
+</kw>
+<msg timestamp="20230205 16:37:19.581" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:19.582" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:18.861" endtime="20230205 16:37:19.583"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:19.599" level="INFO">Releasing item '21' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:19.595" endtime="20230205 16:37:19.599"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:19.592" endtime="20230205 16:37:19.600"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:19.590" endtime="20230205 16:37:19.601"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:19.602" endtime="20230205 16:37:19.603"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:19.601" endtime="20230205 16:37:19.603"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:19.590" endtime="20230205 16:37:19.604"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:19.585" endtime="20230205 16:37:19.606"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:18.858" endtime="20230205 16:37:19.607"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:18.857" endtime="20230205 16:37:19.607"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:19.609" endtime="20230205 16:37:19.610"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:19.608" endtime="20230205 16:37:19.610"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:18.857" endtime="20230205 16:37:19.611"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:18.742" endtime="20230205 16:37:19.614"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:19.617" level="INFO">${payload} = {'traffic_data': {'country': 'ESP', 'year': 2019, 'rate': 3.91405}}</msg>
+<status status="PASS" starttime="20230205 16:37:19.616" endtime="20230205 16:37:19.618"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:19.621" level="INFO">${traffic_data} = {'country': 'ESP', 'year': 2019, 'rate': 3.91405}</msg>
+<status status="PASS" starttime="20230205 16:37:19.619" endtime="20230205 16:37:19.622"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:19.627" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:19.715" level="INFO">${country} = ESP</msg>
+<status status="PASS" starttime="20230205 16:37:19.625" endtime="20230205 16:37:19.716"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:19.719" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:19.717" endtime="20230205 16:37:19.720"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:19.721" endtime="20230205 16:37:19.721"/>
+</return>
+<msg timestamp="20230205 16:37:19.723" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:19.623" endtime="20230205 16:37:19.723"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:19.732" endtime="20230205 16:37:20.423"/>
+</kw>
+<msg timestamp="20230205 16:37:20.424" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:20.425" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:19.730" endtime="20230205 16:37:20.425"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:20.440" level="INFO">Releasing item '22' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:20.437" endtime="20230205 16:37:20.441"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:20.434" endtime="20230205 16:37:20.443"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:20.433" endtime="20230205 16:37:20.444"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:20.449" endtime="20230205 16:37:20.450"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:20.446" endtime="20230205 16:37:20.451"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:20.432" endtime="20230205 16:37:20.452"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:20.426" endtime="20230205 16:37:20.453"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:19.726" endtime="20230205 16:37:20.455"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:19.725" endtime="20230205 16:37:20.456"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:20.459" endtime="20230205 16:37:20.460"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:20.457" endtime="20230205 16:37:20.463"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:19.725" endtime="20230205 16:37:20.464"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:19.615" endtime="20230205 16:37:20.466"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:20.475" level="INFO">${payload} = {'traffic_data': {'country': 'DNK', 'year': 2019, 'rate': 3.69833}}</msg>
+<status status="PASS" starttime="20230205 16:37:20.472" endtime="20230205 16:37:20.476"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:20.483" level="INFO">${traffic_data} = {'country': 'DNK', 'year': 2019, 'rate': 3.69833}</msg>
+<status status="PASS" starttime="20230205 16:37:20.478" endtime="20230205 16:37:20.484"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:20.511" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:20.644" level="INFO">${country} = DNK</msg>
+<status status="PASS" starttime="20230205 16:37:20.507" endtime="20230205 16:37:20.646"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:20.649" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:20.647" endtime="20230205 16:37:20.649"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:20.650" endtime="20230205 16:37:20.651"/>
+</return>
+<msg timestamp="20230205 16:37:20.652" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:20.485" endtime="20230205 16:37:20.652"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:20.664" endtime="20230205 16:37:21.369"/>
+</kw>
+<msg timestamp="20230205 16:37:21.370" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:21.371" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:20.659" endtime="20230205 16:37:21.371"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:21.383" level="INFO">Releasing item '23' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:21.382" endtime="20230205 16:37:21.384"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:21.379" endtime="20230205 16:37:21.385"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:21.377" endtime="20230205 16:37:21.386"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:21.387" endtime="20230205 16:37:21.388"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:21.387" endtime="20230205 16:37:21.389"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:21.376" endtime="20230205 16:37:21.389"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:21.372" endtime="20230205 16:37:21.390"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:20.654" endtime="20230205 16:37:21.391"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:20.653" endtime="20230205 16:37:21.392"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:21.394" endtime="20230205 16:37:21.396"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:21.393" endtime="20230205 16:37:21.397"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:20.653" endtime="20230205 16:37:21.398"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:20.468" endtime="20230205 16:37:21.398"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:21.402" level="INFO">${payload} = {'traffic_data': {'country': 'DEU', 'year': 2019, 'rate': 3.78353}}</msg>
+<status status="PASS" starttime="20230205 16:37:21.401" endtime="20230205 16:37:21.403"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:21.407" level="INFO">${traffic_data} = {'country': 'DEU', 'year': 2019, 'rate': 3.78353}</msg>
+<status status="PASS" starttime="20230205 16:37:21.404" endtime="20230205 16:37:21.408"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:21.415" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:21.506" level="INFO">${country} = DEU</msg>
+<status status="PASS" starttime="20230205 16:37:21.412" endtime="20230205 16:37:21.507"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:21.510" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:21.508" endtime="20230205 16:37:21.510"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:21.513" endtime="20230205 16:37:21.514"/>
+</return>
+<msg timestamp="20230205 16:37:21.515" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:21.408" endtime="20230205 16:37:21.516"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:21.521" endtime="20230205 16:37:22.184"/>
+</kw>
+<msg timestamp="20230205 16:37:22.185" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:22.186" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:21.520" endtime="20230205 16:37:22.186"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:22.200" level="INFO">Releasing item '24' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:22.198" endtime="20230205 16:37:22.202"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:22.197" endtime="20230205 16:37:22.203"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:22.195" endtime="20230205 16:37:22.204"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:22.205" endtime="20230205 16:37:22.206"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:22.205" endtime="20230205 16:37:22.207"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:22.193" endtime="20230205 16:37:22.207"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:22.188" endtime="20230205 16:37:22.209"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:21.518" endtime="20230205 16:37:22.210"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:21.517" endtime="20230205 16:37:22.210"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:22.214" endtime="20230205 16:37:22.215"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:22.213" endtime="20230205 16:37:22.216"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:21.516" endtime="20230205 16:37:22.216"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:21.399" endtime="20230205 16:37:22.217"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:22.221" level="INFO">${payload} = {'traffic_data': {'country': 'CYP', 'year': 2013, 'rate': 4.9831}}</msg>
+<status status="PASS" starttime="20230205 16:37:22.219" endtime="20230205 16:37:22.221"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:22.224" level="INFO">${traffic_data} = {'country': 'CYP', 'year': 2013, 'rate': 4.9831}</msg>
+<status status="PASS" starttime="20230205 16:37:22.222" endtime="20230205 16:37:22.224"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:22.231" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:22.325" level="INFO">${country} = CYP</msg>
+<status status="PASS" starttime="20230205 16:37:22.227" endtime="20230205 16:37:22.325"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:22.330" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:22.326" endtime="20230205 16:37:22.330"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:22.331" endtime="20230205 16:37:22.332"/>
+</return>
+<msg timestamp="20230205 16:37:22.334" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:22.225" endtime="20230205 16:37:22.334"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:22.347" endtime="20230205 16:37:23.086"/>
+</kw>
+<msg timestamp="20230205 16:37:23.087" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:23.088" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:22.342" endtime="20230205 16:37:23.088"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:23.102" level="INFO">Releasing item '25' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:23.100" endtime="20230205 16:37:23.104"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.096" endtime="20230205 16:37:23.105"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.093" endtime="20230205 16:37:23.106"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:23.107" endtime="20230205 16:37:23.108"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:23.106" endtime="20230205 16:37:23.108"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:23.093" endtime="20230205 16:37:23.109"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:23.090" endtime="20230205 16:37:23.110"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:22.338" endtime="20230205 16:37:23.112"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:22.337" endtime="20230205 16:37:23.113"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:23.115" endtime="20230205 16:37:23.116"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:23.114" endtime="20230205 16:37:23.116"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:22.336" endtime="20230205 16:37:23.117"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:22.218" endtime="20230205 16:37:23.118"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:23.124" level="INFO">${payload} = {'traffic_data': {'country': 'CHE', 'year': 2019, 'rate': 2.24644}}</msg>
+<status status="PASS" starttime="20230205 16:37:23.123" endtime="20230205 16:37:23.125"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:23.129" level="INFO">${traffic_data} = {'country': 'CHE', 'year': 2019, 'rate': 2.24644}</msg>
+<status status="PASS" starttime="20230205 16:37:23.126" endtime="20230205 16:37:23.130"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:23.135" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:23.229" level="INFO">${country} = CHE</msg>
+<status status="PASS" starttime="20230205 16:37:23.133" endtime="20230205 16:37:23.230"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:23.233" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:23.231" endtime="20230205 16:37:23.234"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:23.234" endtime="20230205 16:37:23.235"/>
+</return>
+<msg timestamp="20230205 16:37:23.236" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:23.130" endtime="20230205 16:37:23.237"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:23.246" endtime="20230205 16:37:23.938"/>
+</kw>
+<msg timestamp="20230205 16:37:23.939" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:23.940" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:23.241" endtime="20230205 16:37:23.940"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:23.952" level="INFO">Releasing item '26' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:23.950" endtime="20230205 16:37:23.952"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.948" endtime="20230205 16:37:23.954"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.947" endtime="20230205 16:37:23.954"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:23.956" endtime="20230205 16:37:23.956"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:23.955" endtime="20230205 16:37:23.957"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:23.947" endtime="20230205 16:37:23.958"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:23.941" endtime="20230205 16:37:23.958"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.237" endtime="20230205 16:37:23.961"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:23.237" endtime="20230205 16:37:23.962"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:23.964" endtime="20230205 16:37:23.964"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:23.963" endtime="20230205 16:37:23.965"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:23.237" endtime="20230205 16:37:23.966"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:23.120" endtime="20230205 16:37:23.966"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:23.970" level="INFO">${payload} = {'traffic_data': {'country': 'AUT', 'year': 2019, 'rate': 4.86592}}</msg>
+<status status="PASS" starttime="20230205 16:37:23.969" endtime="20230205 16:37:23.970"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:23.973" level="INFO">${traffic_data} = {'country': 'AUT', 'year': 2019, 'rate': 4.86592}</msg>
+<status status="PASS" starttime="20230205 16:37:23.971" endtime="20230205 16:37:23.973"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:23.982" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:24.076" level="INFO">${country} = AUT</msg>
+<status status="PASS" starttime="20230205 16:37:23.979" endtime="20230205 16:37:24.078"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:24.082" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:24.080" endtime="20230205 16:37:24.082"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:24.083" endtime="20230205 16:37:24.084"/>
+</return>
+<msg timestamp="20230205 16:37:24.085" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:23.975" endtime="20230205 16:37:24.085"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:24.090" endtime="20230205 16:37:24.763"/>
+</kw>
+<msg timestamp="20230205 16:37:24.764" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:24.764" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:24.089" endtime="20230205 16:37:24.765"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:24.775" level="INFO">Releasing item '27' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:24.772" endtime="20230205 16:37:24.776"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.769" endtime="20230205 16:37:24.779"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.768" endtime="20230205 16:37:24.780"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:24.783" endtime="20230205 16:37:24.784"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:24.781" endtime="20230205 16:37:24.785"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:24.768" endtime="20230205 16:37:24.796"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:24.765" endtime="20230205 16:37:24.797"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.087" endtime="20230205 16:37:24.799"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.086" endtime="20230205 16:37:24.800"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:24.803" endtime="20230205 16:37:24.804"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:24.802" endtime="20230205 16:37:24.805"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:24.086" endtime="20230205 16:37:24.807"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:23.967" endtime="20230205 16:37:24.808"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:24.818" level="INFO">${payload} = {'traffic_data': {'country': 'AUS', 'year': 2019, 'rate': 4.93914}}</msg>
+<status status="PASS" starttime="20230205 16:37:24.815" endtime="20230205 16:37:24.819"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:24.825" level="INFO">${traffic_data} = {'country': 'AUS', 'year': 2019, 'rate': 4.93914}</msg>
+<status status="PASS" starttime="20230205 16:37:24.821" endtime="20230205 16:37:24.827"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:24.862" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:24.976" level="INFO">${country} = AUS</msg>
+<status status="PASS" starttime="20230205 16:37:24.857" endtime="20230205 16:37:24.978"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:24.984" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:24.981" endtime="20230205 16:37:24.985"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:24.985" endtime="20230205 16:37:24.986"/>
+</return>
+<msg timestamp="20230205 16:37:24.987" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:24.829" endtime="20230205 16:37:24.988"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:24.995" endtime="20230205 16:37:25.686"/>
+</kw>
+<msg timestamp="20230205 16:37:25.687" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:25.688" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:24.991" endtime="20230205 16:37:25.688"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:25.702" level="INFO">Releasing item '28' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:25.700" endtime="20230205 16:37:25.703"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:25.697" endtime="20230205 16:37:25.705"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:25.696" endtime="20230205 16:37:25.705"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:25.707" endtime="20230205 16:37:25.708"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:25.706" endtime="20230205 16:37:25.708"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:25.696" endtime="20230205 16:37:25.710"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:25.690" endtime="20230205 16:37:25.711"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.989" endtime="20230205 16:37:25.712"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:24.989" endtime="20230205 16:37:25.713"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:25.716" endtime="20230205 16:37:25.716"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:25.714" endtime="20230205 16:37:25.717"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:24.988" endtime="20230205 16:37:25.718"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:24.811" endtime="20230205 16:37:25.719"/>
+</kw>
+<kw name="Process traffic data">
+<kw name="Get Work Item Payload" library="RPA.Robocorp.WorkItems">
+<var>${payload}</var>
+<doc>Get the full JSON payload for a work item.</doc>
+<msg timestamp="20230205 16:37:25.723" level="INFO">${payload} = {'traffic_data': {'country': 'ATG', 'year': 2019, 'rate': 0.0}}</msg>
+<status status="PASS" starttime="20230205 16:37:25.722" endtime="20230205 16:37:25.724"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${traffic_data}</var>
+<arg>${payload}[${WORK_ITEM_NAME}]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230205 16:37:25.729" level="INFO">${traffic_data} = {'country': 'ATG', 'year': 2019, 'rate': 0.0}</msg>
+<status status="PASS" starttime="20230205 16:37:25.725" endtime="20230205 16:37:25.730"/>
+</kw>
+<kw name="Validate traffic data">
+<var>${valid}</var>
+<arg>${traffic_data}</arg>
+<kw name="Get value from JSON" library="RPA.JSON">
+<var>${country}</var>
+<arg>${traffic_data}</arg>
+<arg>$.country</arg>
+<doc>Get a single value from a JSON serializable object that matches the given expression.</doc>
+<msg timestamp="20230205 16:37:25.735" level="INFO">Get value from JSON with expression: '$.country'</msg>
+<msg timestamp="20230205 16:37:25.825" level="INFO">${country} = ATG</msg>
+<status status="PASS" starttime="20230205 16:37:25.734" endtime="20230205 16:37:25.826"/>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<var>${valid}</var>
+<arg>len("${country}") == 3</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230205 16:37:25.830" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:25.828" endtime="20230205 16:37:25.831"/>
+</kw>
+<return>
+<value>${valid}</value>
+<status status="PASS" starttime="20230205 16:37:25.831" endtime="20230205 16:37:25.832"/>
+</return>
+<msg timestamp="20230205 16:37:25.833" level="INFO">${valid} = True</msg>
+<status status="PASS" starttime="20230205 16:37:25.731" endtime="20230205 16:37:25.834"/>
+</kw>
+<if>
+<branch type="IF" condition="${valid}">
+<kw name="Post traffic data to sales system">
+<arg>${traffic_data}</arg>
+<kw name="Run Keyword And Ignore Error" library="BuiltIn">
+<var>${status}</var>
+<var>${return}</var>
+<arg>POST</arg>
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<kw name="POST" library="RPA.HTTP">
+<arg>https://robocorp.com/inhuman-insurance-inc/sales-system-api</arg>
+<arg>json=${traffic_data}</arg>
+<doc>Sends a POST request.</doc>
+<status status="PASS" starttime="20230205 16:37:25.841" endtime="20230205 16:37:26.553"/>
+</kw>
+<msg timestamp="20230205 16:37:26.554" level="INFO">${status} = PASS</msg>
+<msg timestamp="20230205 16:37:26.555" level="INFO">${return} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20230205 16:37:25.839" endtime="20230205 16:37:26.555"/>
+</kw>
+<kw name="Handle traffic API response">
+<arg>${status}</arg>
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<if>
+<branch type="IF" condition="&quot;${status}&quot; == &quot;PASS&quot;">
+<kw name="Handle traffic API OK response">
+<kw name="Release Input Work Item" library="RPA.Robocorp.WorkItems">
+<arg>DONE</arg>
+<doc>Release the lastly retrieved input work item and set its state.</doc>
+<msg timestamp="20230205 16:37:26.568" level="INFO">Releasing item '29' with COMPLETED state and exception: None</msg>
+<status status="PASS" starttime="20230205 16:37:26.566" endtime="20230205 16:37:26.569"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:26.563" endtime="20230205 16:37:26.571"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:26.562" endtime="20230205 16:37:26.572"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle traffic API error response">
+<arg>${return}</arg>
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:26.573" endtime="20230205 16:37:26.574"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:26.572" endtime="20230205 16:37:26.574"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:26.561" endtime="20230205 16:37:26.575"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:26.556" endtime="20230205 16:37:26.575"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:25.837" endtime="20230205 16:37:26.578"/>
+</kw>
+<status status="PASS" starttime="20230205 16:37:25.836" endtime="20230205 16:37:26.579"/>
+</branch>
+<branch type="ELSE">
+<kw name="Handle invalid traffic data">
+<arg>${traffic_data}</arg>
+<status status="NOT RUN" starttime="20230205 16:37:26.581" endtime="20230205 16:37:26.582"/>
+</kw>
+<status status="NOT RUN" starttime="20230205 16:37:26.580" endtime="20230205 16:37:26.582"/>
+</branch>
+<status status="PASS" starttime="20230205 16:37:25.835" endtime="20230205 16:37:26.584"/>
+</if>
+<status status="PASS" starttime="20230205 16:37:25.720" endtime="20230205 16:37:26.585"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:33.876" endtime="20230205 16:37:26.585"/>
+</kw>
+<status status="PASS" starttime="20230205 16:35:33.868" endtime="20230205 16:37:26.588"/>
+</test>
+<doc>Inhuman Insurance, Inc. Artificial Intelligence System robot.
+Consumes traffic data work items.</doc>
+<status status="PASS" starttime="20230205 16:35:31.178" endtime="20230205 16:37:26.600"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tasks</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Consumer">Consumer</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20230205 16:35:35.045" level="WARN">Invalid traffic data: {'country': 'SWError', 'year': 2019, 'rate': 3.13947}</msg>
+<msg timestamp="20230205 16:35:35.066" level="ERROR">Releasing item '1' with FAILED state and exception: {'type': 'BUSINESS', 'code': 'INVALID_TRAFFIC_DATA', 'message': "Invalid traffic data: {'country': 'SWError', 'year': 2019, 'rate': 3.13947}"}</msg>
+<msg timestamp="20230205 16:36:31.804" level="ERROR">Traffic data posting failed: {'country': 'SWE', 'year': 2018, 'rate': 3.61718} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<msg timestamp="20230205 16:36:37.789" level="ERROR">Releasing item '2' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<msg timestamp="20230205 16:36:49.516" level="ERROR">Traffic data posting failed: {'country': 'ISR', 'year': 2019, 'rate': 3.90874} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<msg timestamp="20230205 16:36:53.094" level="ERROR">Releasing item '13' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<msg timestamp="20230205 16:36:55.651" level="ERROR">Traffic data posting failed: {'country': 'ISL', 'year': 2019, 'rate': 2.04915} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<msg timestamp="20230205 16:37:05.199" level="ERROR">Releasing item '14' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+<msg timestamp="20230205 16:37:10.997" level="ERROR">Traffic data posting failed: {'country': 'GTM', 'year': 2006, 'rate': 4.61297} HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api</msg>
+<msg timestamp="20230205 16:37:12.194" level="ERROR">Releasing item '16' with FAILED state and exception: {'type': 'APPLICATION', 'code': 'TRAFFIC_DATA_POST_FAILED', 'message': 'HTTPError: 500 Server Error: Internal Server Error for url: https://robocorp.com/inhuman-insurance-inc/sales-system-api'}</msg>
+</errors>
+</robot>
